@@ -1,0 +1,89 @@
+<div class="mainContainer">
+	<section>
+		<section class="search_tools">
+			<input type="text" class="search rounded form-control" placeholder="Search" id="query" ng-model="query"/> <br/>
+			<select ng-model="orderProperty" class="form-control">
+			  <option value="title">제목순</option>
+			  <option value="author">작성자순</option>
+			  <option value="created">작성일순(예전것부터)</option>
+			  <option value="courseName">강의명순</option>
+			</select>
+		</section>
+		<section class="result_container">
+			<table class="slides table table-striped table-responsive">
+			  <tr>
+			    <th>표지</th>
+			    <th>Title</th>
+			    <th>Author</th>
+			    <th class="Course">Course</th>
+			    <th class="Created">작성일</th>
+			    <th class="Description">Description</th>
+			    <th>Action</th>
+			  </tr>
+			  <tr ng-repeat="slide in slides | orderBy: orderProperty | filter:query" class="clise-item">
+			    <td><img ng-src='http:{{ slide.thumbnailurl }}'/></td>
+			    <td>{{ slide.title }}</td>
+			     <td>{{ slide.author }}</td>
+			    <td class="Course">{{ slide.courseName }}</td>
+			    <td class="Created">{{ slide.created | date:'yyMMdd'}}</td>
+			    <td class="Description"><span ng-show="slide.description.length > 1">{{ slide.description }}</span></td>
+			    <td ng-controller="SlidePreviewModalCtrl">
+			    	<button class="btn" ng-click="open(slide.id)">보기</button>
+			    </td>
+			  </tr>
+			</table>
+		</section>
+	<section>
+</div>
+<style>
+body {
+	color: #34463d;
+}
+table *{
+	1vertical-align: top;
+}
+td>img {
+	height: 60px;
+	border: 1px solid rgba(0,0,0,.1);
+}
+ .form-control {
+	 width: 400px;
+	 margin: 0 auto;
+ }
+.btn {
+background: #ebebeb;
+background: -webkit-linear-gradient(#fff,#ebebeb);
+background: -moz-linear-gradient(#fff,#ebebeb);
+background: linear-gradient(#fff,#ebebeb);
+border: 1px solid #b5b5b5;	
+}
+.btn:hover {
+	background-image: linear-gradient(rgb(255, 255, 255), rgb(215, 215, 215));
+}
+section.search_tools {
+	position: relative;
+	display: block;
+	height: 100px;
+}
+
+@media (max-width: 700px){
+
+ .Description {
+	 display: none;
+ }
+ .Created {
+	 display: none;
+ }
+ .Course {
+	 display: none;
+ }
+ body>.container {
+	 margin:  0;
+	 padding: 0;
+ }
+
+
+}
+
+/* search */ 
+/* thum,bnail items */</style>
