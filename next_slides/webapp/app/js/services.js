@@ -3,9 +3,9 @@
 /* Services */
 // 서버 도메인 
 //var serverDomain = 'http://www.heej.net:9999/';
-var serverDomain = 'http://localhost:54000/nextslides/';
+//var serverDomain = 'http://localhost:54000/nextslides/';
 
-//var serverDomain = 'http://nigayo.com/nextslides/';
+var serverDomain = 'http://nigayo.com/nextslides/';
 
 var lectureCatalogServices = angular.module('myApp.services', []);
 

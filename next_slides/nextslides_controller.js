@@ -201,8 +201,9 @@ exports.post_slides_by_groupName = function(request,response,next) {
 
 exports.put_slides_by_groupName_and_id = function(request,response,next) {
 	var slideGroupName = request.param("slideGroupName");
-	var slideObj = request.body;
-	slideObj["id"] = parseInt(slideObj["id"]);
+	var slideObj = request.body ;
+	console.log(slideObj);
+	//slideObj["id"] = parseInt(slideObj["id"]);
 	var repository = new Repository(slideGroupName,'id');
 	repository.update({
 		"item" : slideObj,

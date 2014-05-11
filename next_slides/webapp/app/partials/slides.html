@@ -26,7 +26,7 @@
 			     <td>{{ slide.author }}</td>
 			    <td class="Course">{{ slide.courseName }}</td>
 			    <td class="Created">{{ slide.created | date:'yyMMdd'}}</td>
-			    <td class="Description"><span ng-show="slide.description.length > 1">{{ slide.description }}</span></td>
+			    <td class="Description"><span ng-show="slide.description.length > 1">{{ slide.description  | limitTo: 80 }}</span></td>
 			    <td>
 			    	<span ng-controller="SlidePreviewModalCtrl">
 			    		<button class="btn" ng-click="open(slide.id)">보기<img class="spinner" ng-show="loading" src="http://f.vimeocdn.com/images_v6/icon_loading_md.gif"></button>
