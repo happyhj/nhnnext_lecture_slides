@@ -1,0 +1,13 @@
+/*
+ * GET users listing.
+ */
+
+exports.res = function(req, res){
+  var callback = ("req", req.query.name);
+  console.log(callback);
+  //res.send(callback);
+  res.json("{'title' : 'jisu'}");
+
+  //normal json response
+  //res.json([{'title':'node'}]);
+};

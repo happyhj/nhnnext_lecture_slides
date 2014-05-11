@@ -1,0 +1,66 @@
+<html>
+<head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/template" id="slideItem">
+  	<li>
+  		<%= title %>
+  		<%= username %>
+  	</li>
+  </script>
+</head>
+<body>
+<button id="updateInbox">updateInbox</button>
+<button id="getInbox">getInbox</button>
+
+</table>
+<script>
+document.getElementById("getInbox").addEventListener("click",getInbox, false);
+document.getElementById("updateInbox").addEventListener("click",updateInbox, false);
+
+var compiled = _.template(document.getElementById("slideItem").innerHTML);
+
+var serverDomain = 'http://localhost:54000/nextslides/';
+
+function updateInbox() {
+			$.ajax({
+					url: serverDomain+'api/1/updateIndox',
+					method: "GET"
+				}).success(function (data) {
+					console.log(data);
+				}).error(function (data) {
+					alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");
+				}
+			);	
+}
+
+function getInbox() {
+			$.ajax({
+					url: serverDomain+'api/1/inbox',
+					method: "GET"
+				}).success(function (data) {
+					drawSlideItems(JSON.parse(data).data);
+				}).error(function (data) {
+					alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");
+				}
+			);		
+}
+
+function drawSlideItems(slides) {
+	var container = document.querySelector(".slideItem-container");
+	container.innerHTML = "";
+	for(var i in slides) {
+		console.log(compiled(slides[i]));
+		container.insertAdjacentHTML('beforeend', compiled(slides[i]));
+	}
+}
+</script>
+</body>
+</html>

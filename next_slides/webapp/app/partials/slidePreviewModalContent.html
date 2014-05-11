@@ -1,0 +1,22 @@
+<div class="modal-body">
+    <div ng-bind-html="currentItem.embedForApply"></div>
+</div>
+<div class="modal-footer">
+	<button class="btn" ng-click="close()">닫기</button>
+</div>
+<style>
+.modal-dialog {
+margin-top: 3%;
+}
+.modal-footer {
+margin-top: 0px;
+}
+/* 랜드스케이프 모드일 경우 margin top 없애기 */
+@media (mia-width: 700px){
+.modal-dialog {
+width: 700px;
+}
+
+}
+
+</style>
