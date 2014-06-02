@@ -11,6 +11,11 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
  <!-- 합쳐지고 최소화된 최신 Bootstrap CSS -->
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<script>
+// 서버 도메인 
+var serverDomain = 'http://localhost:54000/nextslides/';
+//var serverDomain = 'http://www.nigayo.com/nextslides/';
+</script>
   <style>
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
   body {
@@ -97,6 +102,7 @@ text-align: center;
 	    	<nav>
 	            <a href="#/slides" ng-class="slidesClassName">SLIDES</a>
 	            <a href="#/courses" ng-class="coursesClassName">COURSES</a>
+	            <a href="#/coursesManage" ng-class="coursesManageClassName">COURSES_MANAGE</a>
 	            <a href="#/inbox" ng-class="inboxClassName">INBOX</a>
 	            <a href="#/blackListedSlides" ng-class="blackListedSlidesClassName">EXTERN</a>
 	        </nav>

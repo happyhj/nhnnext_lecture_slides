@@ -1,11 +1,6 @@
 'use strict';
 
 /* Services */
-// 서버 도메인 
-//var serverDomain = 'http://www.heej.net:9999/';
-//var serverDomain = 'http://localhost:54000/nextslides/';
-
-var serverDomain = 'http://nigayo.com/nextslides/';
 
 var lectureCatalogServices = angular.module('myApp.services', []);
 
@@ -20,6 +15,13 @@ lectureCatalogServices.factory('DBService', ['$http', '$q', function($http, $q) 
 			for(var i in this.slides) {
 				if(this.slides[i].id == slideId) {
 					return this.slides[i];
+				}
+			}
+		},
+		getCourseById: function(courseId) {
+			for(var i in this.courses) {
+				if(this.courses[i].id == courseId) {
+					return this.courses[i];
 				}
 			}
 		},

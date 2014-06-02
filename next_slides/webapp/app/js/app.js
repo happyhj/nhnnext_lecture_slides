@@ -68,7 +68,20 @@ config(['$routeProvider', function($routeProvider) {
 				return DBService.fetchProfessors();
 			}
 	}
-});  
+  });
+  
+  $routeProvider.when('/coursesManage', {
+  	templateUrl: 'partials/coursesManage.html', 
+  	controller: 'CoursesManageCtrl',
+  	resolve: {
+			fetcedCourses: function(DBService) {
+				return DBService.fetchCourses();
+			},
+			fetcedProfessors: function(DBService) {
+				return DBService.fetchProfessors();
+			}
+	}
+  });  
    
 //  $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
   $routeProvider.otherwise({redirectTo: '/courses'});

@@ -13,11 +13,7 @@ if (!String.prototype.trim) {
         return this.replace(/^\s+|\s+$/g, '');
     };
 }  
-// 서버 도메인 
-//var serverDomain = 'http://www.heej.net:9999/';
-//var serverDomain = 'http://localhost:54000/nextslides/';
 
-var serverDomain = 'http://www.nigayo.com/nextslides/';
 
 
 var lectureCatalogControllers = angular.module('myApp.controllers', []);
@@ -848,5 +844,158 @@ lectureCatalogControllers.controller('CoursesCtrl', ['$scope', '$http', '$locati
 		$scope.orderProperty = 'courseName'; 		
     	$scope.initSlides();     
 */
+	}
+]);
+
+
+
+lectureCatalogControllers.controller('CoursesManageCtrl', ['$scope', '$http', '$location', '$sce', 'DBService','fetcedCourses','fetcedProfessors',
+	function($scope,$http,$location,$sce,DBService,fetcedCourses,fetcedProfessors) {
+		console.log('init CoursesManageCtrl');
+		DBService.courses = fetcedCourses.data;
+		DBService.professors = fetcedProfessors.data;
+
+
+    	$scope.courses = DBService.courses;
+		$scope.professors = DBService.professors;
+		console.log($scope.courses);
+		
+		$scope.orderProperty = 'courseName'; 		
+	}
+]);
+
+lectureCatalogControllers.controller('CourseInfoModalCtrl', ['$rootScope','$scope', '$http', '$modal', 'DBService','$sce',
+	function ($root,$scope, $http, $modal,DBService,$sce) {
+	
+		$scope.slides = DBService.slides;
+		$scope.courses = DBService.courses;
+		$scope.professors = DBService.professors;  
+		
+		console.log('init SlideInfoModalCtrl');
+		
+		// 슬라이드의 소속 가능성이 있는 강의들을 반환 
+		$scope.isCourseAvailable = function(username) {
+			console.log("실행은되냐");
+			//var username = course.username;
+			return function(course) {
+				if(course.id === 0) {
+					return true;
+				}
+				var realname = getRealName(username);
+				return isProfessorIn(course,realname);
+			};
+		}
+		
+		function isProfessorIn(course,professorName) {
+			for(var i in course.instructor) {
+				if(course.instructor[i] === professorName) {
+					return true;
+				}	    				    		
+			}
+			return false;	
+		}
+	
+    	function getRealName(username) {
+    		for(var i in $scope.professors) {
+	    		if($scope.professors[i].slideshare_username == username) {
+		    		return $scope.professors[i].name;
+	    		}
+    		}
+			return false;
+    	}
+
+					  
+		$scope.open = function (course_id) {			
+			var currentItem = DBService.getCourseById(course_id);
+			//var availableCourses = [];
+			
+			//var test = $scope.isCourseAvailable(currentItem.username);
+			/*
+			var t_idx;
+			for(var i in $scope.courses) {
+				if(test($scope.courses[i],getRealName(currentItem.username))) {	
+					if(currentItem.course_id === $scope.courses[i].id)
+						t_idx = i;
+					else
+						availableCourses.push($scope.courses[i]);
+				}
+			} 		  
+			availableCourses.splice(0, 0, $scope.courses[t_idx]);
+			*/
+			
+			var modalInstance = $modal.open({
+				templateUrl: 'partials/courseInfoModalContent.html',
+				controller: function ($rootScope,$scope, $modalInstance) {			
+					$scope.$on('$locationChangeStart', function(scope, next, current){
+						$scope.close();
+					});
+				
+					$scope.isModalOpened = false;
+					
+					$modalInstance.opened.then(function(result) {
+						$scope.isModalOpened = true;
+					});
+					
+					$scope.currentItem = currentItem;
+					//$scope.availableCourses = availableCourses;
+		
+					function decodeSlideTitleText() {
+						for(var i in $scope.slides) {
+							$scope.slides[i].title = decodeHtmlNumeric($scope.slides[i].title);
+							if($scope.slides[i].description.length) {
+								$scope.slides[i].description = decodeHtmlNumeric($scope.slides[i].description);
+							}
+						}
+					}    	
+				
+					function decodeHtmlNumeric( str ) {
+						return str.replace( /&#([0-9]{1,7});/g, function( g, m1 ){
+					        return String.fromCharCode( parseInt( m1, 10 ) );
+					    }).replace( /&#[xX]([0-9a-fA-F]{1,6});/g, function( g, m1 ){
+					        return String.fromCharCode( parseInt( m1, 16 ) );
+					    });
+					}	
+
+					$scope.updateSlideInfo = function () {
+						var targetSlide = $scope.currentItem;
+						delete targetSlide["$$hashKey"];
+						console.log(targetSlide);		    		
+			    		
+			    		var postOption = {
+							url: serverDomain+'api/1/slides/'+targetSlide.id,
+							method: "PUT",
+							data: JSON.stringify(targetSlide)
+						};
+							
+			    		// 해당슬라이드 blacklist DB에 추가하고 inbox DB 에서 지우는 요청 하고나서 
+						$http(postOption).success(function (data, status, headers, config) {
+								if(data.status == 200) {
+									console.log(id+"인 슬라이드를 잘 수정했습니다.");
+									DBService.loadSlides(function(data){
+										$scope.slides = data.data;
+										console.log("reload slides - success");
+										$scope.decodeHangulInbox();
+									});										
+								}
+							}).error(function (data, status, headers, config) {
+								alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");
+							}
+						);  						
+
+				    	$modalInstance.dismiss('cancel');
+				    	$modalInstance.result.then(function() {
+					    	$scope.isModalOpened = false;
+				    	});
+					}			
+		
+					$scope.close = function () {
+				    	$modalInstance.dismiss('cancel');
+				    	$modalInstance.result.then(function() {
+					    	$scope.isModalOpened = false;
+				    	});
+					}	  
+				}
+			});
+		};
 	}
 ]);
