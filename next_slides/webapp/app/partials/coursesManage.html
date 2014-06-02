@@ -1,0 +1,86 @@
+<div class="mainContainer">
+	<section>
+		<section class="search_tools">
+			<input type="text" class="search rounded form-control" placeholder="Search" id="query" ng-model="query"/> <br/>
+			<select ng-model="orderProperty" class="form-control">
+			  <option value="courseName">강의명순</option>
+			</select>
+		</section>
+		<section class="result_container">
+			<table class="slides table table-striped table-responsive">
+			  <tr>
+			    <th>Course name(ko)</th>
+			    <th class="name_en">Course name(en)</th>
+			    <th>Professor</th>
+			    <th class="Description">Description</th>
+			    <th>필수 전공</th>
+			    <th>선택 전공</th>
+			    <th>Year/Term</th>
+			    <th>Action</th>
+			  </tr>
+			  <tr ng-repeat="course in courses | orderBy: orderProperty | filter:query" class="clise-item">
+			    <td>{{ course.name_ko }}</td>
+			    <td  class="name_en">{{ course.name_en }}</td>
+			    <td>{{ course.instructor }}</td>
+			    <td class="Description"><span ng-show="course.summery.length > 1">{{ course.summery  | limitTo: 80 }}</span></td>
+			    <td>{{ course.majorCore }}</td>
+			    <td>{{ course.majorElective }}</td>
+			    <td>{{ course.year }}/{{ course.term }}</td>
+			    <td>
+			    	<span ng-controller="CourseInfoModalCtrl">
+			    		<button class="btn" ng-click="open(course.id)">수정</button>
+			    	</span>
+					<button class="btn" ng-click="deleteCourse(course.id)">삭제</button>
+			    </td>
+			  </tr>
+			</table>
+		</section>
+	<section>
+</div>
+<style>
+body {
+	color: #34463d;
+}
+table *{
+	1vertical-align: top;
+}
+td>img {
+	height: 60px;
+	border: 1px solid rgba(0,0,0,.1);
+}
+ .form-control {
+	 width: 400px;
+	 margin: 0 auto;
+ }
+.btn {
+background: #ebebeb;
+background: -webkit-linear-gradient(#fff,#ebebeb);
+background: -moz-linear-gradient(#fff,#ebebeb);
+background: linear-gradient(#fff,#ebebeb);
+border: 1px solid #b5b5b5;	
+}
+.btn:hover {
+	background-image: linear-gradient(rgb(255, 255, 255), rgb(215, 215, 215));
+}
+section.search_tools {
+	position: relative;
+	display: block;
+	height: 100px;
+}
+@media (max-width: 700px){
+ .name_en {
+	 display: none;	 
+ }
+ .Description {
+	 display: none;
+ }
+ body>.container {
+	 margin:  0;
+	 padding: 0;
+ }
+
+
+}
+
+/* search */ 
+/* thum,bnail items */</style>

@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h1>안녕</h1>
+</div>
+<div class="modal-body">
+    <label for="name_ko">Course name(ko)</label><br/>
+	<input type="text" name="name_ko" id="name_ko" ng-model="currentItem.name_ko"  style="width:100%;"><br>
+    <label for="name_en">Course name(en)</label><br/>
+	<input type="text" name="name_en" id="name_en" ng-model="currentItem.name_en"  style="width:100%;"><br>
+	
+	
+    <label for="instructor">Instructor</label><br/>
+	<input type="text" name="instructor" id="instructor" ng-model="currentItem.instructor" style="width:100%;"><br>
+
+    <label for="year">Year</label><br/>
+	<input type="text" name="year" id="year" ng-model="currentItem.year"  style="width:100%;"><br>
+
+    <label for="term">Term</label><br/>
+	<input type="text" name="term" id="term" ng-model="currentItem.term"  style="width:100%;"><br>	
+	
+    <label for="summery">Summery</label><br/>
+	<textarea type="text" name="summery" ng-model="currentItem.summery" id="summery" style="width:100%;height:120px;">
+	</textarea>
+    <label for="instructor">필수전공</label><br/>
+	<input type="checkbox" name="vehicle" value="Bike" checked>웹서버
+	<input type="checkbox" name="vehicle" value="Car">웹UI
+	<input type="checkbox" name="vehicle" value="Bike">모바일
+	<input type="checkbox" name="vehicle" value="Car">게임클라 
+	<input type="checkbox" name="vehicle" value="Car">게임서버<br/>   
+    <label for="instructor">선택전공</label><br/>
+	<input type="checkbox" name="vehicle" value="Bike">웹서버
+	<input type="checkbox" name="vehicle" value="Car">웹UI
+	<input type="checkbox" name="vehicle" value="Bike">모바일
+	<input type="checkbox" name="vehicle" value="Car">게임클라 
+	<input type="checkbox" name="vehicle" value="Car">게임서버
+
+</div>
+<div class="modal-footer">
+	<button class="btn" ng-click="close()">취소</button>
+	<button class="btn" ng-click="updateSlideInfo()">적용</button>
+</div>
+<style>
+.modal-dialog {
+margin-top: 3%;
+}
+.modal-footer {
+margin-top: 0px;
+}
+/* 랜드스케이프 모드일 경우 margin top 없애기 */
+@media (mia-width: 700px){
+.modal-dialog {
+width: 700px;
+}
+
+}
+
+</style>
