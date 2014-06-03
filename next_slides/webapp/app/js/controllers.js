@@ -956,26 +956,57 @@ lectureCatalogControllers.controller('CourseInfoModalCtrl', ['$rootScope','$scop
 					    });
 					}	
 
-					$scope.updateSlideInfo = function () {
-						var targetSlide = $scope.currentItem;
-						delete targetSlide["$$hashKey"];
-						console.log(targetSlide);		    		
-			    		
+
+
+
+					// toggle selection for a given fruit by name
+					$scope.toggleCoreSelection = function(trackName) {
+						var idx = $scope.currentItem.majorCore.indexOf(trackName);
+						
+						// is currently selected
+						if (idx > -1) {
+						  $scope.currentItem.majorCore.splice(idx, 1);
+						}
+						
+						// is newly selected
+						else {
+						  $scope.currentItem.majorCore.push(trackName);
+						}
+					};
+					$scope.toggleElectiveSelection = function(trackName) {
+						var idx = $scope.currentItem.majorElective.indexOf(trackName);
+						
+						// is currently selected
+						if (idx > -1) {
+						  $scope.currentItem.majorElective.splice(idx, 1);
+						}
+						
+						// is newly selected
+						else {
+						  $scope.currentItem.majorElective.push(trackName);
+						}
+					};
+					$scope.updateCourseInfo = function () {
+						var targetCourse = $scope.currentItem;	    		
+						delete targetCourse.$$hashKey;		    		
 			    		var postOption = {
-							url: serverDomain+'api/1/slides/'+targetSlide.id,
+							url: serverDomain+'api/1/courses/'+targetCourse.id,
 							method: "PUT",
-							data: JSON.stringify(targetSlide)
+							data: JSON.stringify(targetCourse)
 						};
 							
 			    		// 해당슬라이드 blacklist DB에 추가하고 inbox DB 에서 지우는 요청 하고나서 
 						$http(postOption).success(function (data, status, headers, config) {
 								if(data.status == 200) {
-									console.log(id+"인 슬라이드를 잘 수정했습니다.");
-									DBService.loadSlides(function(data){
-										$scope.slides = data.data;
-										console.log("reload slides - success");
+									alert("강의를 잘 수정했습니다.");
+									$modalInstance.close();
+									
+									DBService.loadCourses(function(data){
+										$scope.courses = data.data;
+										console.log("reload courses - success");
 										$scope.decodeHangulInbox();
-									});										
+									});
+																		
 								}
 							}).error(function (data, status, headers, config) {
 								alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");

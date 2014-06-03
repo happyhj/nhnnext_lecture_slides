@@ -8,7 +8,7 @@
 		<button class="btn" ng-disabled="getSlideForm.$invalid" ng-click="getSlide(slide_url)">슬라이드 불러오기</button><br /><br />
 	</form>
 	<form name="newSlideForm">
-		<img ng-hide="currentItem.thumbnailurl === undefined" style="float:right" src="{{currentItem.thumbnailurl}}"/>
+		<img ng-hide="currentItem.thumbnailurl === undefined" style="float:right;height:100px;" src="{{currentItem.thumbnailurl}}"/>
 		<h5>제목<span ng-click="modifyTitle()"><img class="modify action" src="img/pencil-512.png"/></span></h5>
 		<p ng-hide="currentItem.title === undefined">{{currentItem.title}}</p>
 		<h5>Description<span ng-click="modifyDescription()"><img class="modify action" src="img/pencil-512.png"/></span></h5>

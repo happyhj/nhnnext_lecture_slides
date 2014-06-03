@@ -21,22 +21,22 @@
 	<textarea type="text" name="summery" ng-model="currentItem.summery" id="summery" style="width:100%;height:120px;">
 	</textarea>
     <label for="instructor">필수전공</label><br/>
-	<input type="checkbox" name="vehicle" value="Bike" checked>웹서버
-	<input type="checkbox" name="vehicle" value="Car">웹UI
-	<input type="checkbox" name="vehicle" value="Bike">모바일
-	<input type="checkbox" name="vehicle" value="Car">게임클라 
-	<input type="checkbox" name="vehicle" value="Car">게임서버<br/>   
+	<input type="checkbox" name="vehicle" value="WEB_SERVER" ng-checked="currentItem.majorCore.indexOf('WEB_SERVER') > -1" ng-click="toggleCoreSelection('WEB_SERVER')">웹서버
+	<input type="checkbox" name="vehicle" value="WEB_CLIENT" ng-checked="currentItem.majorCore.indexOf('WEB_CLIENT') > -1" ng-click="toggleCoreSelection('WEB_CLIENT')">웹UI
+	<input type="checkbox" name="vehicle" value="MOBILE" ng-checked="currentItem.majorCore.indexOf('MOBILE') > -1" ng-click="toggleCoreSelection('MOBILE')">모바일
+	<input type="checkbox" name="vehicle" value="GAME_CLIENT" ng-checked="currentItem.majorCore.indexOf('GAME_CLIENT') > -1" ng-click="toggleCoreSelection('GAME_CLIENT')">게임클라 
+	<input type="checkbox" name="vehicle" value="GAME_SERVER" ng-checked="currentItem.majorCore.indexOf('GAME_SERVER') > -1" ng-click="toggleCoreSelection('GAME_SERVER')">게임서버<br/>   
     <label for="instructor">선택전공</label><br/>
-	<input type="checkbox" name="vehicle" value="Bike">웹서버
-	<input type="checkbox" name="vehicle" value="Car">웹UI
-	<input type="checkbox" name="vehicle" value="Bike">모바일
-	<input type="checkbox" name="vehicle" value="Car">게임클라 
-	<input type="checkbox" name="vehicle" value="Car">게임서버
+	<input type="checkbox" name="vehicle" value="WEB_SERVER" ng-checked="currentItem.majorElective.indexOf('WEB_SERVER') > -1" ng-click="toggleElectiveSelection('WEB_SERVER')">웹서버
+	<input type="checkbox" name="vehicle" value="WEB_CLIENT" ng-checked="currentItem.majorElective.indexOf('WEB_CLIENT') > -1" ng-click="toggleElectiveSelection('WEB_CLIENT')">웹UI
+	<input type="checkbox" name="vehicle" value="MOBILE" ng-checked="currentItem.majorElective.indexOf('MOBILE') > -1" ng-click="toggleElectiveSelection('MOBILE')">모바일
+	<input type="checkbox" name="vehicle" value="GAME_CLIENT" ng-checked="currentItem.majorElective.indexOf('GAME_CLIENT') > -1" ng-click="toggleElectiveSelection('GAME_CLIENT')">게임클라 
+	<input type="checkbox" name="vehicle" value="GAME_SERVER" ng-checked="currentItem.majorElective.indexOf('GAME_SERVER') > -1" ng-click="toggleElectiveSelection('GAME_SERVER')">게임서버
 
 </div>
 <div class="modal-footer">
 	<button class="btn" ng-click="close()">취소</button>
-	<button class="btn" ng-click="updateSlideInfo()">적용</button>
+	<button class="btn" ng-click="updateCourseInfo()">적용</button>
 </div>
 <style>
 .modal-dialog {

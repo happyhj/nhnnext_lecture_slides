@@ -54,7 +54,17 @@ lectureCatalogServices.factory('DBService', ['$http', '$q', function($http, $q) 
 					url: serverDomain+'api/1/Slides',
 					method: "GET"
 				}).success(function (data, status, headers, config) {
-					//$scope.persons = data; // assign  $scope.persons here as promise is resolved here 
+					callback(data);
+				}).error(function (data, status, headers, config) {
+					alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");
+				}
+			);			
+		},	
+		loadCourses: function(callback) {
+			$http({
+					url: serverDomain+'api/1/courses',
+					method: "GET"
+				}).success(function (data, status, headers, config) {
 					callback(data);
 				}).error(function (data, status, headers, config) {
 					alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");
