@@ -75,7 +75,7 @@ app.put("/nextslides/api/1/courses/:courseId", nextslides_ctrl.put_courses_by_co
 app.delete("/nextslides/api/1/courses/:courseId", nextslides_ctrl.delete_courses_by_courseId);
 
 /* GET Full slide Info */
-app.get("/nextslides/api/1/slideshare/:slideId", nextslides_ctrl.get_slide_full_info);	
+app.get("/nextslides/api/1/slideshare", nextslides_ctrl.get_slide_full_info);
 
 /**
 * blackListedSlides, slides, inbox 의 CRUD 구현

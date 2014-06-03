@@ -360,17 +360,23 @@ function getInboxHandler(request,response,next) {
 
 exports.get_slide_full_info = function(request,response,next) {
 	console.log("헉 요청들어옴");
-	var slideId = request.param("slideId");
+	var slideIdentifier = request.param("identifier");
+	var IdentifierType = request.param("type"); // url | id
+	
 	var apikeyEncoded = getApiKeyUrlEncoded(secretKey, apikey);	
 	
 	function callback(result) {
 		console.log("콜백이 실행 된당");
 		response.send(JSON.stringify(result));		
 	}	
-									           	
+	
+	var path = 	 '/api/2/get_slideshow?slideshow_'+IdentifierType+'='+slideIdentifier+apikeyEncoded;
+	
+	console.log(path);
+	           	
 	https.request({
 	  host: 'www.slideshare.net',
-	  path: '/api/2/get_slideshow?slideshow_id='+slideId+apikeyEncoded,
+	  path: path,
 	  headers: {'Content-Type': 'text/html; charset=utf-8'}
 	}, function(ApiResponse) {
 	  var xmlStr = '';

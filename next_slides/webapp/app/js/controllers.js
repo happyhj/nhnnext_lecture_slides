@@ -465,7 +465,7 @@ lectureCatalogControllers.controller('SlidePreviewModalCtrl', ['$rootScope','$sc
 				 	// embed 코드를 API 를 통해 가져온후 아래 코드는 콜백으로 처리한다.
 				$scope.loading = true;
 				$.ajax({
-				  url: serverDomain + 'api/1/slideshare/'+slide_id,
+				  url: serverDomain + 'api/1/slideshare?identifier='+slide_id+'&type=id',
 				  method: "get"
 				}).success((function(result) {
 			$scope.loading = false;
