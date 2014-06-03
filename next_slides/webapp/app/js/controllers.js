@@ -999,3 +999,200 @@ lectureCatalogControllers.controller('CourseInfoModalCtrl', ['$rootScope','$scop
 		};
 	}
 ]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 슬라이드 정보 수정 모달 컨드롤러
+lectureCatalogControllers.controller('AddSlideByUrlModalCtrl', ['$rootScope','$scope', '$http', '$modal', 'DBService','$sce',
+	function ($root,$scope, $http, $modal,DBService,$sce) {
+		$scope.slides = DBService.slides;
+		$scope.courses = DBService.courses;
+		$scope.professors = DBService.professors;  
+		
+		console.log('init AddSlideByUrlModalCtrl');
+		
+		// 슬라이드의 소속 가능성이 있는 강의들을 반환 
+		$scope.open = function () {			
+			var modalInstance = $modal.open({
+				templateUrl: 'partials/AddSlideByUrlModalContent.html',
+				controller: function ($rootScope,$scope, $modalInstance) {			
+					$scope.$on('$locationChangeStart', function(scope, next, current){
+						$scope.close();
+					});
+
+					$scope.slide_url = "";
+					$scope.getSlide = function(target_url){
+						$scope.currentItem = {};	
+						function reqListener () {
+							//console.log(JSON.parse(this.responseText));
+							var slideObj = JSON.parse(this.responseText).slideshow;
+							$scope.currentItem = {
+								id: slideObj.id,
+								title: slideObj.title,
+								description: slideObj.description,
+								created: slideObj.created,
+								updated: slideObj.updated,
+								username: slideObj.username,
+								thumbnailurl: slideObj.thumbnailurl,
+								$$hashKey: slideObj.$$hashKey,
+								course_id: 0,
+								tags: [],
+								author: ""
+							};
+							//alert($scope.currentItem.title);
+							$scope.$apply();
+						}
+						
+						var oReq = new XMLHttpRequest();
+						oReq.onload = reqListener;
+						oReq.open("get", serverDomain+'api/1/slideshare?identifier='+target_url+"&type=url", true);
+						oReq.send();
+					}
+					
+					$scope.submitSlide = function() {
+			    		var targetSlide = $scope.currentItem;
+			     		// tags 스트링을 스트링의 배열로 나누기
+			    		if(targetSlide.tags) {
+				    		targetSlide.tags = targetSlide.tags.split(",");
+				    		for(var i in targetSlide.tags) {
+					    		targetSlide.tags[i] = targetSlide.tags[i].trim();
+				    		}
+						}
+						if(targetSlide.course_id) {
+							targetSlide.course_id = parseInt(targetSlide.course_id);
+						}
+						
+						if(typeof targetSlide.description === "object") {
+							targetSlide.description = "";
+						}
+									    		
+			    		var postOption = {
+							url: serverDomain+'api/1/slides',
+							method: "POST",
+							data: JSON.stringify(targetSlide)
+						};
+						
+						// 현재 슬라이드 중에서 id가 동일한 슬라이드가 없을 경우만 POST요청 보내기	
+						var isExist = false;
+						for(var i in $scope.slides) {
+							if($scope.slides[i].id === targetSlide.id){
+								isExist = true;
+							}
+						}
+						if(isExist===false){
+				    		// 해당슬라이드 blacklist DB에 추가하고 inbox DB 에서 지우는 요청 하고나서 
+							    		
+				    		var postOption = {
+								url: serverDomain+'api/1/slides',
+								method: "POST",
+								data: JSON.stringify(targetSlide)
+							};
+				
+							$http(postOption).success(function (data, status, headers, config) {
+									if(data.status == 200) {
+										alert("슬라이드가 카탈로그에 잘 추가되었습니다.");
+										$modalInstance.close();
+									}
+								}).error(function (data, status, headers, config) {
+									alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");
+								}
+							);  							
+						}
+
+					}
+					
+					$scope.modifyTitle = function() {
+			    		var newTitle = prompt("슬라이드 제목을 수정하세요", $scope.currentItem.title);
+						if (newTitle != "")
+						{
+						  $scope.currentItem.title = newTitle;			 
+						}
+			    	}
+					$scope.modifyDescription = function() {
+			    		var newDescription = prompt("슬라이드 설명을 수정하세요", $scope.currentItem.description);
+						if (newDescription != "")
+						{
+						  $scope.currentItem.description = newDescription;			 
+						}
+			    	}
+			
+					$scope.isModalOpened = false;
+					
+					$modalInstance.opened.then(function(result) {
+						$scope.isModalOpened = true;
+					});
+
+					function decodeSlideTitleText() {
+						for(var i in $scope.slides) {
+							$scope.slides[i].title = decodeHtmlNumeric($scope.slides[i].title);
+							if($scope.slides[i].description.length) {
+								$scope.slides[i].description = decodeHtmlNumeric($scope.slides[i].description);
+							}
+						}
+					}    	
+				
+					function decodeHtmlNumeric( str ) {
+						return str.replace( /&#([0-9]{1,7});/g, function( g, m1 ){
+					        return String.fromCharCode( parseInt( m1, 10 ) );
+					    }).replace( /&#[xX]([0-9a-fA-F]{1,6});/g, function( g, m1 ){
+					        return String.fromCharCode( parseInt( m1, 16 ) );
+					    });
+					}	
+					// add를 위한 함수로 바꿔준다.
+					/*
+					$scope.updateSlideInfo = function () {
+						var targetSlide = $scope.currentItem;
+						delete targetSlide["$$hashKey"];
+						console.log(targetSlide);		    		
+			    		
+			    		var postOption = {
+							url: serverDomain+'api/1/slides/'+targetSlide.id,
+							method: "PUT",
+							data: JSON.stringify(targetSlide)
+						};
+							
+			    		// 해당슬라이드 blacklist DB에 추가하고 inbox DB 에서 지우는 요청 하고나서 
+						$http(postOption).success(function (data, status, headers, config) {
+								if(data.status == 200) {
+									console.log(id+"인 슬라이드를 잘 수정했습니다.");
+									DBService.loadSlides(function(data){
+										$scope.slides = data.data;
+										console.log("reload slides - success");
+										$scope.decodeHangulInbox();
+									});										
+								}
+							}).error(function (data, status, headers, config) {
+								alert("에러가 발생하였습니다. 서버가 요청에 제대로 응답하지 않습니다.");
+							}
+						);  						
+
+				    	$modalInstance.dismiss('cancel');
+				    	$modalInstance.result.then(function() {
+					    	$scope.isModalOpened = false;
+				    	});
+					}			
+					*/
+			
+					$scope.close = function () {
+				    	$modalInstance.dismiss('cancel');
+				    	$modalInstance.result.then(function() {
+					    	$scope.isModalOpened = false;
+				    	});
+					}	  
+				}
+			});
+		};
+	}
+]);
+ 

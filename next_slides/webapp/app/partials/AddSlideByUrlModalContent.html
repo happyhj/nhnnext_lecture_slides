@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <h1>slideshare URL로 슬라이드를 추가합니다.</h1>
+</div>
+<div class="modal-body">
+	<h3>불러 올 슬라이드쉐어의 URL을 적어주세요</h3>
+	<form name="getSlideForm">
+		<input type="text" name="slide_url" id="slide_url" ng-model="slide_url"  style="width:100%;" required/><br>
+		<button class="btn" ng-disabled="getSlideForm.$invalid" ng-click="getSlide(slide_url)">슬라이드 불러오기</button><br /><br />
+	</form>
+	<form name="newSlideForm">
+		<img ng-hide="currentItem.thumbnailurl === undefined" style="float:right" src="{{currentItem.thumbnailurl}}"/>
+		<h5>제목<span ng-click="modifyTitle()"><img class="modify action" src="img/pencil-512.png"/></span></h5>
+		<p ng-hide="currentItem.title === undefined">{{currentItem.title}}</p>
+		<h5>Description<span ng-click="modifyDescription()"><img class="modify action" src="img/pencil-512.png"/></span></h5>
+		<p ng-hide="currentItem.description === undefined">{{currentItem.description}}</p>
+		<div  style="float:right" >
+			<div style="display:inline-block;margin-right:10px;">
+			<h5>Id</h5>
+			<p ng-hide="currentItem.id === undefined">{{currentItem.id}}</p>
+			<h5>Username</h5>
+			<p ng-hide="currentItem.username === undefined">{{currentItem.username}}</p>	
+			</div>	
+			<div style="display:inline-block">	
+			<h5>created</h5>
+			<p ng-hide="currentItem.created === undefined">{{currentItem.created}}</p>
+			<h5>updated</h5>
+			<p ng-hide="currentItem.updated === undefined">{{currentItem.updated}}</p>
+			</div>
+		</div>
+		<h5>Author(슬라이드 저자의 이름을 적어주세요.필수)</h5>
+		<input type="text" ng-model="currentItem.author" required/>
+		<h5>Tags(하나이상의 태그를 적어주세요.필수)</h5>
+		<input type="text" ng-model="currentItem.tags" required/>
+	</form>
+
+</div>
+<div class="modal-footer">
+	<p>새로운 슬라이드는 스페셜 course안에 추가됩니다.</p>
+	<button class="btn" ng-click="close()">취소</button>
+	<button class="btn" ng-disabled="newSlideForm.$invalid" ng-click="submitSlide()">카달로그에 추가</button>
+</div>
+<style>
+.modal-dialog {
+margin-top: 3%;
+}
+.modal-footer {
+margin-top: 0px;
+}
+/* 랜드스케이프 모드일 경우 margin top 없애기 */
+@media (mia-width: 700px){
+.modal-dialog {
+width: 700px;
+}
+
+}
+
+</style>
